@@ -27,9 +27,7 @@
 #include "mfkey.h"
 #include "crypto1.h"
 #include "plugin_interface.h"
-
 #include "utils.h"
-
 #include <flipper_application/flipper_application.h>
 #include <loader/firmware_api/firmware_api.h>
 #include <storage/storage.h>
@@ -149,10 +147,10 @@ int binsearch(unsigned int data[], int start, int stop) {
 }
 
 // here is some magic!
-void quicksort(uint32_t array[], int low, int high) {
+void quicksort(unsigned int array[], int low, int high) {
     while (low < high) {
         // Use insertion sort for small subarrays
-        if (high - low + 1 <= 32) {  // Increased threshold for better cache usage
+        if (high - low + 1 <= 16) {  // Threshold for switching to insertion sort
             for (int i = low + 1; i <= high; i++) {
                 uint32_t key = array[i];
                 int j = i - 1;
@@ -162,34 +160,37 @@ void quicksort(uint32_t array[], int low, int high) {
                 }
                 array[j + 1] = key;
             }
-            return;
+            return;  // Subarray sorted, return
         }
 
+        // Get the pivot using median-of-three
         uint32_t pivot = MEDIAN_OF_THREE(array, low, high);
         int i = low, j = high;
 
-        // Partitioning step with ARM-optimized comparisons
-        while (1) {
-            while (__builtin_arm_uadd8(array[i], 0) < __builtin_arm_uadd8(pivot, 0)) i++;
-            while (__builtin_arm_uadd8(array[j], 0) > __builtin_arm_uadd8(pivot, 0)) j--;
-            if (i >= j) break;
-            SWAP(&array[i], &array[j]);
-            i++;
-            j--;
+        // Partitioning step
+        while (i <= j) {
+            while (array[i] < pivot) i++;
+            while (array[j] > pivot) j--;
+            if (i <= j) {
+                SWAP(&array[i], &array[j]);
+                i++;
+                j--;
+            }
         }
 
-        // Tail-recursion optimization
+        // Tail-recursion optimization: recurse on the smaller partition
         if (j - low < high - i) {
             if (low < j)
-                quicksort(array, low, j);
-            low = i;
+                quicksort(array, low, j);  // Sort left partition
+            low = i;  // Tail recursion: continue with right partition
         } else {
             if (i < high)
-                quicksort(array, i, high);
-            high = j;
+                quicksort(array, i, high);  // Sort right partition
+            high = j;  // Tail recursion: continue with left partition
         }
     }
 }
+
 
 
 int extend_table(unsigned int data[], int tbl, int end, int bit, int m1, int m2, unsigned int in) {
