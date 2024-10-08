@@ -39,10 +39,13 @@
     (array)[mid]; \
 })
 
+// Pretty sure the difference between 12 and 8 is negligable in RAM, but 16 works *really* well
+// Like I don't believe that a whole ass KB is within error most of the time
+
 // #define INSERTION_SORT_THRESHOLD 12 // 8.2 KB (??) Free
 
 //#define INSERTION_SORT_THRESHOLD 8 // 8.6 KB Free
 
-#define INSERTION_SORT_THRESHOLD 16 //9.6 KB (!!) Free
+#define INSERTION_SORT_THRESHOLD 16 //9.664 KB (!!) Free 
 
 #endif // UTILS_H
