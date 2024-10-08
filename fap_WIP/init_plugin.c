@@ -7,7 +7,7 @@
 #include "mfkey.h"
 #include "crypto1.h"
 #include "plugin_interface.h"
-#include "utils.h"
+//#include "utils.h"
 #include <flipper_application/flipper_application.h>
 
 // TODO: Remove defines that are not needed

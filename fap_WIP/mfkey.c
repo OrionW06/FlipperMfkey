@@ -28,7 +28,7 @@
 #include "crypto1.h"
 #include "plugin_interface.h"
 
-#include "utils.h"
+//#include "utils.h"
 
 #include <flipper_application/flipper_application.h>
 #include <loader/firmware_api/firmware_api.h>
@@ -149,7 +149,7 @@ int binsearch(unsigned int data[], int start, int stop) {
 }
 
 // here is some magic!
-void quicksort(uint32_t array[], int low, int high) {
+void quicksort(unsigned int array[], int low, int high) {
     while (low < high) {
         // Use insertion sort for small subarrays
         if (high - low + 1 <= 32) {  // Increased threshold for better cache usage
