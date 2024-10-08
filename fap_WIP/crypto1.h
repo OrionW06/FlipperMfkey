@@ -1,7 +1,7 @@
 #ifndef CRYPTO1_H
 #define CRYPTO1_H
 
-//#include "utils.h"
+#include "utils.h"
 
 #include <inttypes.h>
 #include "mfkey.h"
