@@ -20,17 +20,13 @@
      (x) = ((x) >> 16) | ((x) << 16))
 
 // Swap two variables of the same type
-#define SWAP(x, y) \
-    do { \
-        unsigned int temp = *(x); \
-        *(x) = *(y); \
-        *(y) = temp; \
-    } while (0)
+#define SWAP(x, y) do { unsigned int temp = (x); (x) = (y); (y) = temp; } while (0)
 
+    
 // Swap two elements in an array if the first is greater than the second
 #define SWAP_IF_GREATER(array, a, b) do { \
     if ((array)[a] > (array)[b]) { \
-        SWAP(&(array)[a], &(array)[b]); \
+        SWAP((array)[a], (array)[b]); \
     } \
 } while (0)
 
@@ -42,5 +38,11 @@
     SWAP_IF_GREATER(array, mid, high); \
     (array)[mid]; \
 })
+
+// #define INSERTION_SORT_THRESHOLD 12 // 8.2 KB (??) Free
+
+//#define INSERTION_SORT_THRESHOLD 8 // 8.6 KB Free
+
+#define INSERTION_SORT_THRESHOLD 16 //9.6 KB (!!) Free
 
 #endif // UTILS_H

@@ -151,10 +151,9 @@ int binsearch(unsigned int data[], int start, int stop) {
 // here is some magic!
 void quicksort(unsigned int array[], int low, int high) {
     while (low < high) {
-        // Use insertion sort for small subarrays
-        if (high - low + 1 <= 32) {  // Increased threshold for better cache usage
+        if (high - low <= INSERTION_SORT_THRESHOLD) {
             for (int i = low + 1; i <= high; i++) {
-                uint32_t key = array[i];
+                unsigned int key = array[i];
                 int j = i - 1;
                 while (j >= low && array[j] > key) {
                     array[j + 1] = array[j];
@@ -164,28 +163,21 @@ void quicksort(unsigned int array[], int low, int high) {
             }
             return;
         }
-
-        uint32_t pivot = MEDIAN_OF_THREE(array, low, high);
+        unsigned int pivot = MEDIAN_OF_THREE(array, low, high);
         int i = low, j = high;
-
-        // Partitioning step with ARM-optimized comparisons
         while (1) {
-            while (__builtin_arm_uadd8(array[i], 0) < __builtin_arm_uadd8(pivot, 0)) i++;
-            while (__builtin_arm_uadd8(array[j], 0) > __builtin_arm_uadd8(pivot, 0)) j--;
+            while (array[i] < pivot) i++;
+            while (array[j] > pivot) j--;
             if (i >= j) break;
-            SWAP(&array[i], &array[j]);
+            SWAP(array[i], array[j]);
             i++;
             j--;
         }
-
-        // Tail-recursion optimization
         if (j - low < high - i) {
-            if (low < j)
-                quicksort(array, low, j);
+            if (low < j) quicksort(array, low, j);
             low = i;
         } else {
-            if (i < high)
-                quicksort(array, i, high);
+            if (i < high) quicksort(array, i, high);
             high = j;
         }
     }
