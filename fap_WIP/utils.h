@@ -18,13 +18,13 @@
 
 #define MEDIAN_OF_THREE(array, low, high) ({ \
     int mid = low + (high - low) / 2; \
-    if (*(array + low) > *(array + mid)) \
-        SWAP(array + low, array + mid); \
-    if (*(array + low) > *(array + high)) \
-        SWAP(array + low, array + high); \
-    if (*(array + mid) > *(array + high)) \
-        SWAP(array + mid, array + high); \
-    *(array + mid); /* Return the median value */ \
+    if ((array)[low] > (array)[mid]) \
+        SWAP(&array[low], &array[mid]); \
+    if ((array)[low] > (array)[high]) \
+        SWAP(&array[low], &array[high]); \
+    if ((array)[mid] > (array)[high]) \
+        SWAP(&array[mid], &array[high]); \
+    (array)[mid]; /* Return the median value */ \
 })
 
 
