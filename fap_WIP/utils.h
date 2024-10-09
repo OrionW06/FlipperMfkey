@@ -25,20 +25,11 @@
     
 // Swap two elements in an array if the first is greater than the second
 #define SWAP_IF_GREATER(array, a, b) do { \
-    unsigned int temp_a = (array)[a]; \
-    unsigned int temp_b = (array)[b]; \
-    asm volatile ( \
-        "cmp %[temp_a], %[temp_b] \n"      /* Compare temp_a and temp_b */ \
-        "it gt \n"                         /* If greater than, execute the following instructions */ \
-        "movgt %[temp_a], %[temp_b] \n"    /* Move temp_b to temp_a if temp_a > temp_b */ \
-        "it gt \n"                         /* If greater than, execute the following instructions */ \
-        "movgt %[temp_b], %[temp_a] \n"    /* Move temp_a to temp_b if temp_a > temp_b */ \
-        : [temp_a] "+r" (temp_a), [temp_b] "+r" (temp_b) \
-        : \
-        : "cc" \
-    ); \
-    (array)[a] = temp_a; \
-    (array)[b] = temp_b; \
+    if ((array)[a] > (array)[b]) { \
+        unsigned int temp = (array)[a]; \
+        (array)[a] = (array)[b]; \
+        (array)[b] = temp; \
+    } \
 } while (0)
 
 // Find the median of three elements in an array (low, mid, high)
