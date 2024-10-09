@@ -29,10 +29,10 @@
     unsigned int temp_b = (array)[b]; \
     asm volatile ( \
         "cmp %[temp_a], %[temp_b] \n"      /* Compare temp_a and temp_b */ \
-        "it lt \n"                         /* If less than, execute the following instructions */ \
-        "movlt %[temp_a], %[temp_b] \n"    /* Move temp_b to temp_a if temp_a < temp_b */ \
-        "it lt \n"                         /* If less than, execute the following instructions */ \
-        "movlt %[temp_b], %[temp_a] \n"    /* Move temp_a to temp_b if temp_a < temp_b */ \
+        "it gt \n"                         /* If greater than, execute the following instructions */ \
+        "movgt %[temp_a], %[temp_b] \n"    /* Move temp_b to temp_a if temp_a > temp_b */ \
+        "it gt \n"                         /* If greater than, execute the following instructions */ \
+        "movgt %[temp_b], %[temp_a] \n"    /* Move temp_a to temp_b if temp_a > temp_b */ \
         : [temp_a] "+r" (temp_a), [temp_b] "+r" (temp_b) \
         : \
         : "cc" \
