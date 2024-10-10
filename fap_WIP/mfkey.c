@@ -35,13 +35,13 @@
 #include <storage/storage.h>
 
 // TODO: Remove defines that are not needed
-#define KEYS_DICT_SYSTEM_PATH EXT_PATH("nfc/assets/mf_classic_dict.nfc")
-#define KEYS_DICT_USER_PATH EXT_PATH("nfc/assets/mf_classic_dict_user.nfc")
-#define MF_CLASSIC_NONCE_PATH EXT_PATH("nfc/.mfkey32.log")
+#define KEYS_DICT_SYSTEM_PATH        EXT_PATH("nfc/assets/mf_classic_dict.nfc")
+#define KEYS_DICT_USER_PATH          EXT_PATH("nfc/assets/mf_classic_dict_user.nfc")
+#define MF_CLASSIC_NONCE_PATH        EXT_PATH("nfc/.mfkey32.log")
 #define MF_CLASSIC_NESTED_NONCE_PATH EXT_PATH("nfc/.nested")
-#define TAG "MFKey"
-#define MAX_NAME_LEN 32
-#define MAX_PATH_LEN 64
+#define TAG                          "MFKey"
+#define MAX_NAME_LEN                 32
+#define MAX_PATH_LEN                 64
 
 //#define LF_POLY_ODD (0x29CE5C)
 //#define LF_POLY_EVEN (0x870804)
@@ -150,12 +150,12 @@ int binsearch(unsigned int data[], int start, int stop) {
 
 // here is some magic!
 void quicksort(unsigned int array[], int low, int high) {
-    while (low < high) {
-        if (high - low <= INSERTION_SORT_THRESHOLD) {
-            for (int i = low + 1; i <= high; i++) {
+    while(low < high) {
+        if(high - low <= INSERTION_SORT_THRESHOLD) {
+            for(int i = low + 1; i <= high; i++) {
                 unsigned int key = array[i];
                 int j = i - 1;
-                while (j >= low && array[j] > key) {
+                while(j >= low && array[j] > key) {
                     array[j + 1] = array[j];
                     j--;
                 }
@@ -165,24 +165,25 @@ void quicksort(unsigned int array[], int low, int high) {
         }
         unsigned int pivot = MEDIAN_OF_THREE(array, low, high);
         int i = low, j = high;
-        while (1) {
-            while (array[i] < pivot) i++;
-            while (array[j] > pivot) j--;
-            if (i >= j) break;
+        while(1) {
+            while(array[i] < pivot)
+                i++;
+            while(array[j] > pivot)
+                j--;
+            if(i >= j) break;
             SWAP(array[i], array[j]);
             i++;
             j--;
         }
-        if (j - low < high - i) {
-            if (low < j) quicksort(array, low, j);
+        if(j - low < high - i) {
+            if(low < j) quicksort(array, low, j);
             low = i;
         } else {
-            if (i < high) quicksort(array, i, high);
+            if(i < high) quicksort(array, i, high);
             high = j;
         }
     }
 }
-
 
 int extend_table(unsigned int data[], int tbl, int end, int bit, int m1, int m2, unsigned int in) {
     in <<= 24;
